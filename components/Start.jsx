@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Button, TextInput, ImageBackground, TouchableOpacity, Image, KeyboardAvoidingView } from "react-native";
 import { useState } from "react";
-import { SvgUri } from 'react-native-svg';
 
 const Start = ({navigation}) => {
 
@@ -8,6 +7,7 @@ const [user, setUser] = useState("");
 const [color, setColor] = useState("#090C08");
 const image = {uri: './img/background.png'};
 
+//  function that alters that resets the state of color variable based on user selection, loaded onto touch components. 
 colorSync = (hex) =>{
     setColor(hex)
     console.log(color, hex);
@@ -26,6 +26,7 @@ colorSync = (hex) =>{
                 </View>
                 <View style={styles.startBottom}>
                     <View style={styles.actionBox}>
+                        {/* user input, linked to state variable of user.  */}
                         <TextInput
                             inlineImageLeft=""
                             style={styles.textInput}
@@ -36,6 +37,7 @@ colorSync = (hex) =>{
                         <View style={styles.chooseText}>  
                             <Text style={{fontSize: 16, fontWeight: 300, color: "#757083", margin: 10, position: "relative", left: -10}}>Choose Background Color: </Text>
                         </View>
+                        {/* renders 4 color 'choices' that also trigger an onPress function that alters that state of 'color' */}
                          <View style={styles.colorCircleContainer}>
                             <TouchableOpacity onPress = {()=>{colorSync("#090C08")}} style={[styles.colorCircle, {backgroundColor: "#090C08"}]}></TouchableOpacity>
                             <TouchableOpacity onPress = {()=>{colorSync("#474056")}} style={[styles.colorCircle, {backgroundColor: "#474056"}]}></TouchableOpacity>
@@ -43,7 +45,8 @@ colorSync = (hex) =>{
                             <TouchableOpacity onPress = {()=>{colorSync("#B9C6AE")}} style={[styles.colorCircle, {backgroundColor: "#B9C6AE"}]}></TouchableOpacity>
                         </View>
                         <TouchableOpacity
-                            onPress= {()=>navigation.navigate('Chat', {user: user, color: color})}
+                        // loads the navigate method onto the onPress event of this component, pointing to 'Chat' connection string, and flows user data / color preference data through props into the Chat component. 
+                            onPress= {()=>navigation.navigate('Chat', {user: user, color: color})} 
                             style={styles.button}
                         >
                             <Text style={styles.buttonText}>Start Chatting</Text>
@@ -52,7 +55,7 @@ colorSync = (hex) =>{
                 </View>
  
              </ImageBackground>
-            
+             { Platform.OS === 'ios' || 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
         </View>
   );
 }
@@ -87,12 +90,6 @@ const styles = StyleSheet.create({
     buttonText:{
         color: "#FFF"
     },
-    // image: {
-    //     flex: 1, 
-    //     justifyContent: 'center',
-    //     height: "100%",
-    //     width: "100%"
-    // },
     startTop:{
         flex: .9,
         // backgroundColor: "blue",
