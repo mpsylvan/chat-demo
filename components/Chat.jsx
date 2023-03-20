@@ -61,10 +61,12 @@ const renderBubble = ( props )=>{
       {... props}
       wrapperStyle = {{
         right: {
-          backgroundColor: color
+          backgroundColor: "#000",
+          color: "pink"
         },
         left: {
-          backgroundColor : '#fff'
+          backgroundColor : "#fff",
+          color: "#000"
         }
       }}
     />
@@ -72,7 +74,7 @@ const renderBubble = ( props )=>{
 }
 
  return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: color}]}>
       <GiftedChat 
         messages = {messages}
         renderBubble = {renderBubble}
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
 // stretch the parent container to take up the full flex area.
  container: {
    flex: 1,
+  
  }, 
 //  userSpan:{
 //     fontSize: 20,
