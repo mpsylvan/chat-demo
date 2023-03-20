@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     actionBox: {
         width: "88%",
         height: 275,
-        backgroundColor: "#ffeeff",
+        backgroundColor: "#eeeeee",
         alignItems: "center",
         justifyContent: "center",
     },
