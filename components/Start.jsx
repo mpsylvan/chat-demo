@@ -39,7 +39,7 @@ colorSync = (hex) =>{
                         </View>
                         {/* renders 4 color 'choices' that also trigger an onPress function that alters that state of 'color' */}
                          <View style={styles.colorCircleContainer}>
-                            <TouchableOpacity onPress = {()=>{colorSync("#090C08")}} style={[styles.colorCircle, {backgroundColor: "#090C08"}]}></TouchableOpacity>
+                            <TouchableOpacity onPress = {()=>{colorSync("#595C58")}} style={[styles.colorCircle, {backgroundColor: "#595958"}]}></TouchableOpacity>
                             <TouchableOpacity onPress = {()=>{colorSync("#474056")}} style={[styles.colorCircle, {backgroundColor: "#474056"}]}></TouchableOpacity>
                             <TouchableOpacity onPress = {()=>{colorSync("#8A95A5")}} style={[styles.colorCircle, {backgroundColor: "#8A95A5"}]}></TouchableOpacity>
                             <TouchableOpacity onPress = {()=>{colorSync("#B9C6AE")}} style={[styles.colorCircle, {backgroundColor: "#B9C6AE"}]}></TouchableOpacity>
