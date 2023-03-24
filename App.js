@@ -4,6 +4,7 @@ import Start from "./components/Start";
 import Chat from "./components/Chat";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import configs from "./utils/utils";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,23 +12,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const App = () => {
-  const firebaseConfig = {
-    apiKey: "AIzaSyCTuBwOlzGkupeFwPKCW1ZtczOZ2FawJtc",
-
-    authDomain: "chat-demo-e5cac.firebaseapp.com",
-
-    projectId: "chat-demo-e5cac",
-
-    storageBucket: "chat-demo-e5cac.appspot.com",
-
-    messagingSenderId: "632444940653",
-
-    appId: "1:632444940653:web:534671460ea6f01a83ea64",
-
-    measurementId: "G-6CSBEGHQ72",
-  };
-
-  const app = initializeApp(firebaseConfig);
+  const app = initializeApp(configs);
 
   const db = getFirestore(app);
 
