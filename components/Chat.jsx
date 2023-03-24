@@ -1,8 +1,15 @@
 import { StyleSheet, View, Text, KeyboardAvoidingView } from "react-native";
 import { useEffect, useState } from "react";
 import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ db, route, navigation }) => {
   // puts a message array on state that will load in existing messages and accept new sent messages.
   const [messages, setMessages] = useState([]);
 
@@ -10,48 +17,33 @@ const Chat = ({ route, navigation }) => {
 
   // every time the component mounts load props data passed from Start.jsx into navigation bar display options.
   useEffect(() => {
-    navigation.setOptions({ title: userID });
+    navigation.setOptions({ title: user });
   }, []);
 
-  // every mount of Chat component, load in an array of static message objects onto state; the objects meet the configurations of a <GiftedChat/> component and it's props.
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello Developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-        renderUsernameOnMessage: true,
-      },
-      {
-        _id: 2,
-        text: "New Message incoming ...",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-          renderUsernameOnMessage: true,
-        },
-      },
-      {
-        _id: 3,
-        text: `${user} has entered the chat.`,
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const unSubMessages = onSnapshot(q, (docs) => {
+      let newMessages = [];
+      docs.forEach((doc) => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date(doc.data().createdAt.toMillis()),
+        });
+        console.log(newMessages[0]);
+        setMessages(newMessages);
+      });
+    });
+    return () => {
+      if (unSubMessages) {
+        unSubMessages();
+      }
+    };
   }, []);
 
   // resets the 'messages' state to append the newest message on every SEND executed within GiftedChat component.
   const onSend = (newMessages) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+    addDoc(collection(db, "messages"), newMessages[0]);
   };
 
   // function that returns a customization object with props awareness which will be loaded as a callback on the renderBubble prop in the GiftedChat component.
@@ -80,7 +72,8 @@ const Chat = ({ route, navigation }) => {
         renderBubble={renderBubble}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          _id: userID,
+          name: user,
         }}
       />
       {/* condition a custom React Native component that readjusts viewport to present input field with keyboard emerges  */}
