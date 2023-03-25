@@ -18,7 +18,7 @@ import { useState } from "react";
 const Start = ({ navigation }) => {
   const auth = getAuth();
 
-  const [user, setUser] = useState("");
+  const [name, setName] = useState("");
   const [color, setColor] = useState("#090C08");
 
   const userSignIn = () => {
@@ -26,7 +26,7 @@ const Start = ({ navigation }) => {
       .then((result) => {
         navigation.navigate("Chat", {
           color: color,
-          user: user,
+          name: name,
           userID: result.user.uid,
         });
         Alert.alert("Successfully signed in. ");
@@ -57,9 +57,9 @@ const Start = ({ navigation }) => {
             <TextInput
               inlineImageLeft=""
               style={styles.textInput}
-              value={user}
+              value={name}
               placeholder="Input your username"
-              onChangeText={setUser}
+              onChangeText={setName}
             />
             <View style={styles.chooseText}>
               <Text
