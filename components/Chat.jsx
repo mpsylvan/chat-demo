@@ -7,21 +7,23 @@ import {
   onSnapshot,
   query,
   orderBy,
+  where,
 } from "firebase/firestore";
 
 const Chat = ({ db, route, navigation }) => {
   // puts a message array on state that will load in existing messages and accept new sent messages.
   const [messages, setMessages] = useState([]);
 
-  const { user, color, userID } = route.params;
+  const { name, color, userID } = route.params;
 
   // every time the component mounts load props data passed from Start.jsx into navigation bar display options.
   useEffect(() => {
-    navigation.setOptions({ title: user });
+    navigation.setOptions({ title: name });
   }, []);
 
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const messageRef = collection(db, "messages");
+    const q = query(messageRef, orderBy("createdAt", "desc"));
     const unSubMessages = onSnapshot(q, (docs) => {
       let newMessages = [];
       docs.forEach((doc) => {
@@ -30,14 +32,12 @@ const Chat = ({ db, route, navigation }) => {
           ...doc.data(),
           createdAt: new Date(doc.data().createdAt.toMillis()),
         });
-        console.log(newMessages[0]);
-        setMessages(newMessages);
       });
+      setMessages(newMessages);
+      console.log(messages.length);
     });
     return () => {
-      if (unSubMessages) {
-        unSubMessages();
-      }
+      if (unSubMessages) unSubMessages();
     };
   }, []);
 
@@ -54,11 +54,9 @@ const Chat = ({ db, route, navigation }) => {
         wrapperStyle={{
           right: {
             backgroundColor: "#000",
-            color: "pink",
           },
           left: {
             backgroundColor: "#fff",
-            color: "#000",
           },
         }}
       />
@@ -73,7 +71,7 @@ const Chat = ({ db, route, navigation }) => {
         onSend={(messages) => onSend(messages)}
         user={{
           _id: userID,
-          name: user,
+          name: name,
         }}
       />
       {/* condition a custom React Native component that readjusts viewport to present input field with keyboard emerges  */}
