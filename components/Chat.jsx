@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, KeyboardAvoidingView } from "react-native";
 import { useEffect, useState } from "react";
-import { Bubble, GiftedChat } from "react-native-gifted-chat";
+import { Bubble, GiftedChat, InputToolbar} from "react-native-gifted-chat";
 import {
   collection,
   addDoc,
@@ -9,22 +9,29 @@ import {
   orderBy,
   where,
 } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Chat = ({ db, route, navigation }) => {
+const Chat = ({ db, isConnected, route, navigation }) => {
   // puts a message array on state that will load in existing messages and accept new sent messages.
   const [messages, setMessages] = useState([]);
 
   const { name, color, userID } = route.params;
 
-  // every time the component mounts load props data passed from Start.jsx into navigation bar display options.
+  // upon component mount update the navbar title option to be the state of user. 
   useEffect(() => {
     navigation.setOptions({ title: name });
   }, []);
 
+  let unSubMessages;
+
   useEffect(() => {
-    const messageRef = collection(db, "messages");
-    const q = query(messageRef, orderBy("createdAt", "desc"));
-    const unSubMessages = onSnapshot(q, (docs) => {
+
+    if(unSubMessages) unSubMessages();
+    unSubMessages = null;
+
+    if(isConnected){
+      const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+      unSubMessages = onSnapshot(q, (docs) => {
       let newMessages = [];
       docs.forEach((doc) => {
         newMessages.push({
@@ -32,14 +39,38 @@ const Chat = ({ db, route, navigation }) => {
           ...doc.data(),
           createdAt: new Date(doc.data().createdAt.toMillis()),
         });
+        // call a caching function passing newMessages.
+        cacheMessages(newMessages);
+        setMessages(newMessages);
       });
       setMessages(newMessages);
       console.log(messages.length);
     });
+    }
+    else{
+      loadCachedMessages();
+    }
+    // clean up all side effects but unsubbing from firestore.
     return () => {
       if (unSubMessages) unSubMessages();
     };
-  }, []);
+  }, [isConnected]);
+
+  // accept an array as parameter, and attempt to cache it.
+  const cacheMessages = async (messagesToCache) =>{
+    try{
+      await AsyncStorage.setItem('messages_cached', JSON.stringify(messagesToCache))
+    }
+    catch(err){
+      console.log(err.message);
+    }
+  }
+  // access 
+  const loadCachedMessages = async () =>{
+    const cachedMessages = await AsyncStorage.getItem('messages_cached') || [];
+    setMessages(JSON.parse(cacheMessages));
+  }
+
 
   // resets the 'messages' state to append the newest message on every SEND executed within GiftedChat component.
   const onSend = (newMessages) => {
@@ -53,21 +84,28 @@ const Chat = ({ db, route, navigation }) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#000",
+            backgroundColor: "#121212",
           },
           left: {
-            backgroundColor: "#fff",
+            backgroundColor: "#efefef",
           },
         }}
       />
     );
   };
 
+  const renderInputToolbar = (props)=>{
+    return (isConnected) ? <InputToolbar {...props} /> : null
+    
+  }
+
+
   return (
     <View style={[styles.container, { backgroundColor: color }]}>
       <GiftedChat
         messages={messages}
         renderBubble={renderBubble}
+        renderInputToolbar = {renderInputToolbar}
         onSend={(messages) => onSend(messages)}
         user={{
           _id: userID,
