@@ -20,7 +20,7 @@ const Start = ({ navigation }) => {
 
   const [user, setUser] = useState("");
   const [color, setColor] = useState("#090C08");
-
+// function call upon button press that carries out anonymous firebase login, upon fulfilled promise, re-route to the chat view. 
   const userSignIn = () => {
     signInAnonymously(auth)
       .then((result) => {
