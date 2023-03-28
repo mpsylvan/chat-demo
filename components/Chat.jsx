@@ -9,13 +9,13 @@ import {
   orderBy,
 } from "firebase/firestore";
 
-const Chat = ({ db, route, navigation }) => {
+const Chat = ({ db, isConnected, route, navigation }) => {
   // puts a message array on state that will load in existing messages and accept new sent messages.
   const [messages, setMessages] = useState([]);
 
   const { user, color, userID } = route.params;
 
-  // every time the component mounts load props data passed from Start.jsx into navigation bar display options.
+  // upon component mount update the navbar title option to be the state of user. 
   useEffect(() => {
     navigation.setOptions({ title: user });
   }, []);
@@ -30,7 +30,6 @@ const Chat = ({ db, route, navigation }) => {
           ...doc.data(),
           createdAt: new Date(doc.data().createdAt.toMillis()),
         });
-        console.log(newMessages[0]);
         setMessages(newMessages);
       });
     });
