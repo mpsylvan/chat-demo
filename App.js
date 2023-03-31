@@ -10,13 +10,14 @@ import { useNetInfo } from "@react-native-community/netinfo";
 
 const Stack = createNativeStackNavigator();
 
-// methods to initialize firebase and connect to firestore.
+// methods to initialize firebase and connect to firestore and access storage
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   disableNetwork,
   enableNetwork,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 
@@ -26,8 +27,9 @@ const App = () => {
   // init app with firebase configuration object.
   const app = initializeApp(configs);
 
-  // access the firestore database layer.
+  // access the firestore database layer and the project storage.
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   useEffect(() => {
     if (connectionStatus === false) {
@@ -47,6 +49,7 @@ const App = () => {
           {(props) => (
             <Chat
               db={db}
+              storage={storage}
               isConnected={connectionStatus.isConnected}
               {...props}
             />
