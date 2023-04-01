@@ -5,6 +5,8 @@ import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+
+// custom actions component that extracts stylings, onSend send methods, and a firebase storage reference.
 const CustomActions = ({
   wrapperStyle,
   iconTextStyle,
@@ -12,14 +14,19 @@ const CustomActions = ({
   storage,
   userID,
 }) => {
+
+  // expos custom action sheet. 
   const actionSheet = useActionSheet();
 
+  // function to create a unique reference string combining userID, timestamp and the file name. Will be the reference variable when uploading a new ref to firebase storage. 
   const generateReference = (uri) => {
     const timeStamp = new Date().getTime();
     const imageName = uri.split("/")[uri.split("/").length - 1];
     return `${userID}-${timeStamp}-${imageName}`;
   };
 
+  // configures the reference to firebase storage, fetches the data via uri on the device, configures it into blob and then attemps to upload to firebase storage. Accesses the download URL and
+  // then uses it as the image url in the onSend method.  
   const uploadAndSendImage = async (imageURI) => {
     const uniqueStringRef = generateReference(imageURI);
     const newUploadRef = ref(storage, uniqueStringRef);
@@ -28,10 +35,12 @@ const CustomActions = ({
     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
       console.log("File Uploaded");
       const imageURL = await getDownloadURL(snapshot.ref);
+      console.log(imageURL);
       onSend({ image: imageURL });
     });
   };
 
+  
   const selectImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissions?.granted) {
@@ -65,6 +74,7 @@ const CustomActions = ({
     if (permissions?.granted) {
       const location = await Location.getCurrentPositionAsync({});
       if (location) {
+        console.log("location accessed")
         onSend({
           location: {
             longitude: location.coords.longitude,
