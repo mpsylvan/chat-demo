@@ -23,11 +23,6 @@ import MapView from "react-native-maps";
 const Chat = ({ db, storage, isConnected, route, navigation }) => {
   // puts a message array on state that will load in existing messages and accept new sent messages.
   const [messages, setMessages] = useState([]);
-  const [image, setImage] = useState(null);
-
-  if (image) {
-    console.log(image.uri);
-  }
 
   const { name, color, userID } = route.params;
 
@@ -83,7 +78,7 @@ const Chat = ({ db, storage, isConnected, route, navigation }) => {
   const loadCachedMessages = async () => {
     const cachedMessages =
       (await AsyncStorage.getItem("messages_cached")) || [];
-    setMessages(JSON.parse(cacheMessages));
+    setMessages(JSON.parse(cachedMessages));
   };
 
   // resets the 'messages' state to append the newest message on every SEND executed within GiftedChat component.
