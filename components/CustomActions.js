@@ -15,7 +15,7 @@ const CustomActions = ({
   userID,
 }) => {
 
-  // expos custom action sheet. 
+  // Expo custom action sheet. 
   const actionSheet = useActionSheet();
 
   // function to create a unique reference string combining userID, timestamp and the file name. Will be the reference variable when uploading a new ref to firebase storage. 
@@ -40,8 +40,8 @@ const CustomActions = ({
     });
   };
 
-  
-  const selectImage = async () => {
+    // using Expo ImagePicker API, engages Library permissions flow and then with opens device Media Library, stores a new photo in results asynchronously, and then uploads the uri to firestore. 
+    const selectImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissions?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
@@ -54,7 +54,8 @@ const CustomActions = ({
     }
   };
 
-  const takePhoto = async () => {
+    // using Expo ImagePicker API, engages Camera permissions flow and then with access launches camera, stores a new photo in results asynchronously, and then uploads the uri to firestore. 
+    const takePhoto = async () => {
     let permissions = await ImagePicker.requestCameraPermissionsAsync();
     if (permissions?.granted) {
       console.log(permissions);
@@ -68,9 +69,9 @@ const CustomActions = ({
     }
   };
 
+  // using Expo Location API, engages location permissions flow and then with access gets location, extracts coords into a location object that triggers a MapView chat bubble object being sent. 
   const getLocation = async () => {
     let permissions = await Location.requestForegroundPermissionsAsync();
-
     if (permissions?.granted) {
       const location = await Location.getCurrentPositionAsync({});
       if (location) {
@@ -89,6 +90,7 @@ const CustomActions = ({
     }
   };
 
+  // event handler for customAction button that presents an action sheet of labeled user interaction and then responds to indexed touch events with the necessary media functions, (Photo, Library, Map)
   const onActionPress = () => {
     const options = [
       `Pick Image from Library`,
@@ -117,7 +119,6 @@ const CustomActions = ({
       }
     );
   };
-
   return (
     <TouchableOpacity style={styles.container} onPress={onActionPress}>
       <View style={[styles.wrapper, wrapperStyle]}>

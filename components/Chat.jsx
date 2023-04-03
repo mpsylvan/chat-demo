@@ -107,10 +107,12 @@ const Chat = ({ db, storage, isConnected, route, navigation }) => {
     return isConnected ? <InputToolbar {...props} /> : null;
   };
 
+  // callback function to be passed in the GiftedChat custom actions prop that returns a CustomAction component with relevant prop data. 
   const renderCustomActions = (props) => {
     return <CustomActions userID={userID} storage={storage} {...props} />;
   };
 
+  // a custom view for handling messages sent explicitly with a location property, which triggers Expos MapView component in the render/return. The location object is sent in a special getLocation handler in CustomActions.js
   const renderCustomView = (props) => {
     const { currentMessage } = props;
     if (currentMessage.location) {
