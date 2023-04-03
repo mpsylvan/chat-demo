@@ -21,12 +21,14 @@
 
 - A page where users can enter their name and choose a background color for the chat screen before joining the chat .
 - A page displaying the conversation, as well as an input field and submit button.
-- The chat must provide users with two additional communication features: sending images and location data.
+- The app leverages firebase's anonymous sign in feature to generate and record user ID/ message authors.
+- Utilizes React Navigation to switch between two views, Start screen and a Chat screen.
 - Data gets stored online and offline.
 
 # Setting up the development environment:
 
 - Clone the repository: git clone https://github.com/mpsylvan/chat-demo
+
 # EXPO 
 - Install Expo CLI as a global npm package: yarn add global expo-cli
 - Create an account and log in at https://expo.dev/.
