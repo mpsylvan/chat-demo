@@ -11,13 +11,3 @@ const configs = {
   export default configs;
 
 
-// chat app. 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBPaEVLxawgxZSeswWqXHFdEk-V_sWTx2w",
-    authDomain: "shopping-list-demo-71220.firebaseapp.com",
-    projectId: "shopping-list-demo-71220",
-    storageBucket: "shopping-list-demo-71220.appspot.com",
-    messagingSenderId: "958431007690",
-    appId: "1:958431007690:web:439f0f24800d13a983b533",
-    measurementId: "G-SHQSCSS1H1"
-  };

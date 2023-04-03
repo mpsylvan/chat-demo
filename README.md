@@ -27,12 +27,18 @@
 # Setting up the development environment:
 
 - Clone the repository: git clone https://github.com/mpsylvan/chat-demo
+# EXPO 
 - Install Expo CLI as a global npm package: yarn add global expo-cli
 - Create an account and log in at https://expo.dev/.
 - Follow expo CLI's instructions.
 - Install the Expo Go app on your phone (for testing purposes)
 - Start the project: npx expo start 
 - Scan the QR code provided in your terminal
+
+# FIREBASE/ FIRESTORE
+- follow new project workflow within Firebase console
+- include Firebase object within App.js and/or separate file. 
+- make a reference to the project using firebase config obj. 
 
 # Dependencies:
 
