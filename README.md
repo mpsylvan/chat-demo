@@ -26,7 +26,7 @@
 
 # Setting up the development environment:
 
-- Clone the repository: git clone https://github.com/S-Nikola/ChatMeApp
+- Clone the repository: git clone https://github.com/mpsylvan/chat-demo
 - Install Expo CLI as a global npm package: yarn add global expo-cli
 - Install all project dependencies: yarn
 - Create an account and log in at https://expo.dev/.
