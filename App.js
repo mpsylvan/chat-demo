@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import configs from "./utils/utils";
 import { useNetInfo } from "@react-native-community/netinfo";
 
+// initialize the Stack object for the two main views, Start and Chat. 
 const Stack = createNativeStackNavigator();
 
 // methods to initialize firebase and connect to firestore and access storage
@@ -26,10 +27,11 @@ const App = () => {
   // init app with firebase configuration object.
   const app = initializeApp(configs);
 
-  // access the firestore database layer and the project storage.
+  // access the firestore database layer and the project cloud storage.
   const db = getFirestore(app);
   const storage = getStorage(app);
 
+  // conditions database connection on NetInfo connection status variable and re-calls based on updated connection status.  
   useEffect(() => {
     if (connectionStatus === false) {
       Alert.alert("Appis no longer receiving network data");
