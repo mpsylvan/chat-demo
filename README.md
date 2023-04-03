@@ -28,7 +28,6 @@
 
 - Clone the repository: git clone https://github.com/mpsylvan/chat-demo
 - Install Expo CLI as a global npm package: yarn add global expo-cli
-- Install all project dependencies: yarn
 - Create an account and log in at https://expo.dev/.
 - Follow expo CLI's instructions.
 - Install the Expo Go app on your phone (for testing purposes)
